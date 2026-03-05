@@ -1,6 +1,5 @@
 from scipy import stats
 import numpy as np
-import random
 import pandas as pd
 
 RANDOM_STATE = 0
@@ -41,15 +40,12 @@ def main() -> None:
     S = 40
 
     N, C = forward_pass(sites=sites, T=T, p=p, lam=lam)
-    # N = N.item()
-    # C = C.item()
 
     # Storing true values
     true_N = N
     true_p = p
     true_lam = lam
 
-    # For a single site and time
     print("TRUE VALUES")
     print("N:\n", N)
     print("C:\n", C)
@@ -64,7 +60,8 @@ def main() -> None:
     EPOCHS = 10000
     print("EPOCHS:", EPOCHS)
     num_accepted = 0
-    # BACKWARD PASS
+    
+    # TODO: Add a time tracker. Also, it may look good to create some type of visuals for how lambda, p, and N change per iteration. 
     for i in range(EPOCHS):
         if i == 0:
             lam = generate_new_lambda(S)
@@ -85,10 +82,9 @@ def main() -> None:
         acceptance_score = get_log_acceptance(log_old_joint, log_new_joint, log_trans_new_to_old, log_trans_old_to_new)
 
         U = np.log(rng.uniform())
-        if acceptance_score >= U:
+        if acceptance_score >= U: 
             num_accepted += 1
-            # Update params
-            N: np.ndarray = new_N
+            N = new_N
             p = new_p
             lam = new_lam
 
@@ -116,4 +112,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
