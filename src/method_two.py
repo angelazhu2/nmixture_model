@@ -20,21 +20,20 @@ def run_method_two(sites, T, lam, p, S, EPOCHS, random_state=42) -> None:
     lam_samples = []
     p_samples = []
 
-    burn_in = 1000
-    # print("EPOCHS:", EPOCHS)
+    burn_in = EPOCHS // 4
     num_accepted = 0
     
     # TODO: Add a time tracker. Also, it may look good to create some type of visuals for how lambda, p, and N change per iteration. 
     for i in range(EPOCHS):
         if i == 0:
-            # lam = generate_new_lambda(S, rng)
-            # p = rng.uniform(0, 1)
+            lam = generate_new_lambda(S, rng)
+            p = rng.uniform(0, 1)
             N = rng.poisson(lam, size=sites)
 
         log_old_joint = compute_log_joint(N, C, lam, p, S)
 
-        new_lam = lam # generate_new_lambda(S, rng)
-        new_p = p # rng.uniform(0, 1)
+        new_lam = generate_new_lambda(S, rng)
+        new_p = rng.uniform(0, 1)
         new_N = rng.poisson(new_lam, size=sites)
 
         log_new_joint = compute_log_joint(new_N, C, new_lam, new_p, S)
@@ -44,15 +43,15 @@ def run_method_two(sites, T, lam, p, S, EPOCHS, random_state=42) -> None:
 
         acceptance_score = get_log_acceptance(log_old_joint, log_new_joint, log_trans_new_to_old, log_trans_old_to_new)
 
-        U = np.log(rng.uniform())
-        if acceptance_score >= U: 
+        U = rng.uniform()
+        if np.exp(acceptance_score) >= U: 
             num_accepted += 1
-            N = new_N
+            N = new_N # N is in shape (sites, 1)
             p = new_p
             lam = new_lam
 
             if burn_in < i:
-                N_samples.append(N.tolist())
+                N_samples.append(N.tolist()) # N_samples is in shape (num_accepted, sites)
                 lam_samples.append(lam)
                 p_samples.append(p)
 
@@ -67,7 +66,9 @@ def run_method_two(sites, T, lam, p, S, EPOCHS, random_state=42) -> None:
     })
 
     print(N_mean_comparison.to_string(index=False))
-    print("Average Absolute Error in N estimation: ", np.abs(np.mean((true_N - np.mean(N_samples, axis=0)))))
+    print("Average Absolute Error in N estimation: ", np.mean(np.abs(true_N - np.mean(N_samples, axis=0))))
+    print(f"True Total Abundance: {np.sum(true_N)}")
+    print(f"Estimated Total Abundance: {np.sum(np.mean(N_samples, axis=0))}")
 
     print(f"True Lambda: {true_lam} \t est. lam: {np.mean(lam_samples)}")
     print(f"True p: {true_p} \t\t est. p: {np.mean(p_samples)}")

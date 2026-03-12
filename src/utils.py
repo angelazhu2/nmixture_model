@@ -17,7 +17,7 @@ def compute_log_joint(N: np.ndarray, C: np.ndarray, lam: int, p: float, S: int) 
     for t in range(C.shape[1]):
         log_C[:, t] = stats.binom.logpmf(C[:, t], N, p)
     log_N = stats.poisson.logpmf(N, lam)
-    return log_lam + log_p + np.sum(np.sum(log_C, axis=1) + log_N)
+    return np.sum(log_N + np.sum(log_C, axis=1), axis=0)
 
 def generate_new_lambda(S: int, rng:np.random):
     return rng.uniform(1, S)
