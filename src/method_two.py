@@ -4,6 +4,7 @@ from scipy import stats
 import pandas as pd
 
 from utils import forward_pass, generate_new_lambda, compute_log_joint, get_log_acceptance
+from io_utils import save_samples
 
 def run_method_two(sites, T, lam, p, S, EPOCHS, random_state=42) -> None:
     """Uniform lambda and p. Estimate N from poisson given lambda."""
@@ -58,6 +59,15 @@ def run_method_two(sites, T, lam, p, S, EPOCHS, random_state=42) -> None:
     if not num_accepted: 
         print("No samples accepted.")
         return
+    
+    save_samples("../data/results", 
+                 method= 2, 
+                 true_lam=true_lam,
+                 true_p=true_p,
+                 true_avg_N=np.mean(true_N),
+                 N_samples=N_samples, 
+                 lam_samples=lam_samples, 
+                 p_samples=p_samples)
 
     N_mean_comparison = pd.DataFrame({
         "Sites": [_ for _ in range(1, sites+1)],

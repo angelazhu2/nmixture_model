@@ -1,16 +1,11 @@
 from __future__ import annotations
+
 import numpy as np
 from scipy import stats
 import pandas as pd
 
-from utils import forward_pass, generate_new_lambda, get_log_acceptance
-
-def compute_log_joint(N: np.ndarray, C: np.ndarray, lam: int, p: float, S: int) -> float:
-    log_C = np.zeros(C.shape)
-    for t in range(C.shape[1]):
-        log_C[:, t] = stats.binom.logpmf(C[:, t], N, p)
-    log_N = stats.poisson.logpmf(N, lam)
-    return np.sum(log_N + np.sum(log_C, axis=1), axis=0)
+from utils import forward_pass, generate_new_lambda, get_log_acceptance, compute_log_joint
+from io_utils import save_samples
 
 def generate_new_N(sites: int, S: int, rng: np.random):
     return rng.integers(low=1, high=S, size=sites)
@@ -86,6 +81,15 @@ def run_method_three(sites, T, lam, p, S, EPOCHS, random_state=42) -> None:
     if not num_accepted: 
         print("No samples accepted.")
         return
+    
+    save_samples("../data/results", 
+                 method=3, 
+                 true_lam=true_lam,
+                 true_p=true_p,
+                 true_avg_N=np.mean(true_N),
+                 N_samples=N_samples, 
+                 lam_samples=lam_samples, 
+                 p_samples=p_samples)
 
     N_mean_comparison = pd.DataFrame({
         "Sites": [_ for _ in range(1, sites+1)],
