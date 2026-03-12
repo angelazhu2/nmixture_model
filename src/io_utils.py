@@ -11,16 +11,36 @@ def save_simulated_data(root: str, N: np.ndarray, C: np.ndarray) -> None:
     print(f"Simulated data saved to {path}")
 
 
-def save_samples(root, method, true_lam, true_p, true_avg_N, N_samples, lam_samples, p_samples):
-    path = f"{root}/samples_{true_lam}lamda_{true_p}p_{true_avg_N}avgN_method{method}.csv"
+def save_samples(root, method, true_lam, true_p, N_samples, lam_samples, p_samples):
+    path = f"{root}/method{method}_lam{true_lam}_p{true_p}_runs.csv"
+    N_arr = np.array(N_samples)
     df = pd.DataFrame({
-        "true_lambda": true_lam,
         "lambda": lam_samples,
-        "true_p": true_p,
         "p": p_samples,
-        "true_avg_N": true_avg_N,
-        "avg_N": [np.mean(n) for n in N_samples],
-        "N": N_samples,
+        "avg_N": N_arr.mean(axis=1),
+        "total_N": N_arr.sum(axis=1),
     })
+    for s in range(N_arr.shape[1]):
+        df[f"N_{s+1}"] = N_arr[:, s]
     df.to_csv(path, index=False)
     print(f"Samples saved to {path}")
+
+
+def save_summary(root, method, true_lam, true_p, true_N, lam_samples, p_samples, N_samples, num_accepted, acceptance_rate):
+    N_arr = np.array(N_samples)
+    mean_N = N_arr.mean(axis=0)
+    path = f"{root}/method{method}_summary.csv"
+    pd.Series({
+        "true_lam": true_lam,
+        "est_lam": np.mean(lam_samples),
+        "true_p": true_p,
+        "est_p": np.mean(p_samples),
+        "true_avg_N": np.mean(true_N),
+        "est_avg_N": mean_N.mean(),
+        "true_total_N": int(np.sum(true_N)),
+        "est_total_N": np.sum(mean_N),
+        "N_mae": float(np.mean(np.abs(true_N - mean_N))),
+        "num_accepted": num_accepted,
+        "acceptance_rate": acceptance_rate,
+    }).to_csv(path, header=False)
+    print(f"Summary saved to {path}")

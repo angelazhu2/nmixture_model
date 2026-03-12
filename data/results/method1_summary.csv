@@ -1,0 +1,11 @@
+true_lam,2.0
+est_lam,2.978604402714733
+true_p,0.25
+est_p,0.15630570515255535
+true_avg_N,2.0
+est_avg_N,2.8756756756756756
+true_total_N,40.0
+est_total_N,57.51351351351351
+N_mae,1.2378378378378376
+num_accepted,49.0
+acceptance_rate,0.0006533333333333333

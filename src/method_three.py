@@ -5,7 +5,7 @@ from scipy import stats
 import pandas as pd
 
 from utils import forward_pass, generate_new_lambda, get_log_acceptance, compute_log_joint
-from io_utils import save_samples
+from io_utils import save_samples, save_summary
 
 def generate_new_N(sites: int, S: int, rng: np.random):
     return rng.integers(low=1, high=S, size=sites)
@@ -78,31 +78,34 @@ def run_method_three(sites, T, lam, p, S, EPOCHS, random_state=42) -> None:
                 lam_samples.append(lam)
                 p_samples.append(p)
 
-    if not num_accepted: 
+    if not num_accepted:
         print("No samples accepted.")
         return
     
-    save_samples("../data/results", 
-                 method=3, 
-                 true_lam=true_lam,
-                 true_p=true_p,
-                 true_avg_N=np.mean(true_N),
-                 N_samples=N_samples, 
-                 lam_samples=lam_samples, 
-                 p_samples=p_samples)
+    N_arr = np.array(N_samples)
+    mean_N = N_arr.mean(axis=0)
+    acceptance_rate = num_accepted / (EPOCHS - burn_in)
 
     N_mean_comparison = pd.DataFrame({
         "Sites": [_ for _ in range(1, sites+1)],
         "True_N": true_N,
-        "Mean_N": np.mean(N_samples, axis=0)
+        "Mean_N": mean_N
     })
 
     print(N_mean_comparison.to_string(index=False))
-    print("Average Absolute Error in N estimation: ", np.mean(np.abs(true_N - np.mean(N_samples, axis=0))))
+    print("Average Absolute Error in N estimation: ", np.mean(np.abs(true_N - mean_N)))
 
     print(f"True Total Abundance: {np.sum(true_N)}")
-    print(f"Estimated Total Abundance: {np.sum(np.mean(N_samples, axis=0))}")
+    print(f"Estimated Total Abundance: {np.sum(mean_N)}")
 
     print(f"True Lambda: {true_lam} \t est. lam: {np.mean(lam_samples)}")
     print(f"True p: {true_p} \t\t est. p: {np.mean(p_samples)}")
     print(f"Samples accepted: {num_accepted}")
+
+    save_samples("../data/results", method=3,
+                 true_lam=true_lam, true_p=true_p,
+                 N_samples=N_samples, lam_samples=lam_samples, p_samples=p_samples)
+    save_summary("../data/results", method=3,
+                 true_lam=true_lam, true_p=true_p, true_N=true_N,
+                 lam_samples=lam_samples, p_samples=p_samples, N_samples=N_samples,
+                 num_accepted=num_accepted, acceptance_rate=acceptance_rate)
