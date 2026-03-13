@@ -1,0 +1,9 @@
+true_lam,2
+est_lam,1.32502178775668
+true_p,0.25
+est_p,0.327143998734021
+true_avg_N,2
+est_avg_N,1.32459699756203
+true_total_N,40
+est_total_N,26.4919399512407
+N_mae,0.795668082992942
