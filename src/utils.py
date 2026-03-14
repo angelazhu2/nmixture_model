@@ -1,23 +1,26 @@
 from __future__ import annotations
 import numpy as np
 from scipy import stats
+from scipy.special import logsumexp
 
 
 def forward_pass(sites: int, T: int, p: float, lam: int, rng:np.random) -> tuple[np.ndarray, np.ndarray]:
     N: np.ndarray = rng.poisson(lam, size=sites) #true abundance per site
     C = np.zeros((sites, T)) #observed counts per site and survey
-    for t in range(T):
-        C[:, t] = rng.binomial(N, p, size=sites)
+    for i in range(sites):
+        for t in range(T):
+            C[i, t] = rng.binomial(N[i], p, size=1).item()
     return N.squeeze(), C.squeeze()
 
 def compute_log_joint(N: np.ndarray, C: np.ndarray, lam: int, p: float, S: int) -> float:
-    log_lam = stats.uniform.logpdf(lam, loc=1, scale=S-1)
-    log_p = stats.uniform.logpdf(p, loc=0, scale=1)
+    # log_lam = stats.uniform.logpdf(lam, loc=1, scale=S-1)
+    # log_p = stats.uniform.logpdf(p, loc=0, scale=1)
     log_C = np.zeros(C.shape)
     for t in range(C.shape[1]):
         log_C[:, t] = stats.binom.logpmf(C[:, t], N, p)
     log_N = stats.poisson.logpmf(N, lam)
-    return np.sum(log_N + np.sum(log_C, axis=1), axis=0)
+    joint = np.sum(log_N + np.sum(log_C, axis=1), axis=0)
+    return joint
 
 def generate_new_lambda(S: int, rng:np.random):
     return rng.uniform(1, S)
@@ -31,3 +34,7 @@ def get_log_acceptance(log_old_joint, log_new_joint, log_trans_new_to_old, log_t
         return -np.inf
     ratio = (log_new_joint - log_old_joint) + (log_trans_new_to_old - log_trans_old_to_new)
     return np.minimum(0, ratio)
+
+# def logsumexp(X: np.ndarray) -> float:
+#     max_val = X.max()
+#     return max_val + np.log(np.sum(np.exp(X - max_val)))

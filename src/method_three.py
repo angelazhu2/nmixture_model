@@ -35,22 +35,24 @@ def run_method_three(sites, T, lam, p, S, EPOCHS, random_state=42) -> None:
     lam = generate_new_lambda(S, rng)
     p = rng.uniform()
     N = rng.poisson(lam, size=sites)# generate_new_N(sites, S, rng)
-    N = np.maximum(N, C_max)
+    # N = np.maximum(N, C_max)
     log_old_joint = compute_log_joint(N, C, lam, p, S)
 
     for i in range(EPOCHS):
+        new_lam = None
         while True: 
             temp = rng.normal(loc=lam, scale=1, size=1).item()
             if temp > 0:
                 new_lam = temp
                 break
+        new_p = None
         while True:
             temp = rng.normal(loc=p, scale=0.1)
             if 0 < temp < 1:
                 new_p = temp
                 break
         
-        new_N = N.copy()
+        new_N = np.zeros(shape=N.shape)
         for j in range(sites):
             while True:
                 proposed_N_i = rng.poisson(N[j])
@@ -68,9 +70,9 @@ def run_method_three(sites, T, lam, p, S, EPOCHS, random_state=42) -> None:
         U = np.log(rng.uniform())
         if acceptance_score >= U: 
             log_old_joint = log_new_joint
-            N = new_N
+            N = new_N # true_N 
             p = new_p
-            lam = new_lam
+            lam = new_lam # true_lam 
 
             if burn_in < i:
                 num_accepted += 1

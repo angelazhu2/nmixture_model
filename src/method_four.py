@@ -27,22 +27,16 @@ def run_method_four(sites, T, lam, p, S, EPOCHS, random_state=42) -> None:
     N_samples = []
     lam_samples = []
     p_samples = []
-
     burn_in = EPOCHS // 4
     # print("EPOCHS:", EPOCHS)
     num_accepted = 0
-    C_max = np.max(C, axis=1)
-    lam = generate_new_lambda(S, rng)
-    p = rng.uniform()
-    N = rng.poisson(lam, size=sites)# generate_new_N(sites, S, rng)
-    N = np.maximum(N, C_max)
-    log_old_joint = compute_log_joint(N, C, lam, p, S)
-    
     # TODO: Add a time tracker. Also, it may look good to create some type of visuals for how lambda, p, and N change per iteration. 
     # p = rng.uniform(0, 1)
     C_max = np.max(C, axis=1)
-    lam = generate_new_lambda(S, rng)
-    p = rng.uniform()
+    lam = 6 # generate_new_lambda(S, rng)
+    # p = rng.uniform()
+    epsilon = 1e-4
+    p = 0.7 # rng.uniform() 
     N = rng.poisson(lam, size=sites)# generate_new_N(sites, S, rng)
     N = np.maximum(N, C_max)
     log_old_joint = compute_log_joint(N, C, lam, p, S)
@@ -51,71 +45,60 @@ def run_method_four(sites, T, lam, p, S, EPOCHS, random_state=42) -> None:
         #import pdb; pdb.set_trace()
         # propose lambda 
         temp_lam = None
-        while True: 
-            temp_lam = rng.normal(loc=lam, scale=1, size=1).item()
-            if temp_lam > 0:
-                new_lam = temp_lam
-                break
-        log_new = compute_log_joint(N, C, new_lam, p, S)
-        log_old = compute_log_joint(N, C, lam, p, S)
+        while True:
+            while True: 
+                temp_lam = rng.normal(loc=lam, scale=1, size=1).item()
+                if temp_lam > 0:
+                    new_lam = temp_lam
+                    break
+            
+            log_new = compute_log_joint(N, C, new_lam, p, S)
+            log_old = compute_log_joint(N, C, lam, p, S)
 
-        acceptance_score = get_log_acceptance(log_old, log_new, 0, 0)
-        if np.log(rng.uniform()) < acceptance_score:
-            lam = new_lam
+            acceptance_score = get_log_acceptance(log_old, log_new, 0, 0)
+            if np.log(rng.uniform()) <= acceptance_score:
+                lam = new_lam
+                break
+        
         # propose p 
         temp_p = None
-        while True:
-            temp_p = rng.normal(loc=p, scale=0.1)
-            if 0 < temp_p < 1:
-                new_p = temp_p
-                break
-        log_new = compute_log_joint(N, C, lam, new_p, S)
-        log_old = compute_log_joint(N, C, lam, p, S)
+        while True: 
+            while True:
+                temp_p = rng.normal(loc=p, scale=0.1)
+                if 0 < temp_p < 1:
+                    new_p = temp_p
+                    break
+            log_new = compute_log_joint(N, C, lam, new_p, S)
+            log_old = compute_log_joint(N, C, lam, p, S)
 
-        acceptance_score = get_log_acceptance(log_old, log_new, 0, 0)
-        if np.log(rng.uniform()) < acceptance_score:
-            p = new_p
+            acceptance_score = get_log_acceptance(log_old, log_new, 0, 0)
+            if np.log(rng.uniform()) < acceptance_score:
+                p = new_p
+                break
 
         new_N = N.copy()
         # propose N 
         for j in range(sites):
-            while True:
+            while True:    
                 proposed_N_i = rng.poisson(N[j])
-                if proposed_N_i >= C_max[j]:
-                    new_N[j] = proposed_N_i
-                    break
-            log_new = compute_log_joint(new_N, C, lam, p, S)
-            log_old = compute_log_joint(N, C, lam, p, S)
-            log_trans_new_to_old = np.sum(stats.poisson.logpmf(N, mu=new_N))
-            log_trans_old_to_new = np.sum(stats.poisson.logpmf(new_N, mu=N))
+                new_N[j] = np.maximum(proposed_N_i, C_max[j])
 
-            acceptance_score = get_log_acceptance(log_old, log_new, log_trans_new_to_old, log_trans_old_to_new)
-            if np.log(rng.uniform()) < acceptance_score:
-                N[j] = new_N[j]
+                log_new = compute_log_joint(new_N, C, lam, p, S)
+                log_old = compute_log_joint(N, C, lam, p, S)
+
+                log_trans_new_to_old = np.sum(stats.poisson.logpmf(N, mu=new_N))
+                log_trans_old_to_new = np.sum(stats.poisson.logpmf(new_N, mu=N))
+
+                acceptance_score = get_log_acceptance(log_old, log_new, log_trans_new_to_old, log_trans_old_to_new)
+                if np.log(rng.uniform()) <= acceptance_score:
+                    N[j] = new_N[j]
+                    break 
+
         if burn_in < i:
             num_accepted += 1
             N_samples.append(N.tolist())
             lam_samples.append(lam)
             p_samples.append(p)
-        # log_new_joint = compute_log_joint(new_N, C, new_lam, new_p, S)
-
-        # log_trans_new_to_old = np.sum(stats.poisson.logpmf(N, mu=new_N))
-        # log_trans_old_to_new = np.sum(stats.poisson.logpmf(new_N, mu=N))
-
-        # acceptance_score = get_log_acceptance(log_old_joint, log_new_joint, log_trans_new_to_old, log_trans_old_to_new)
-
-        # U = np.log(rng.uniform())
-        # if acceptance_score >= U: 
-        #     log_old_joint = log_new_joint
-        #     N = new_N
-        #     p = new_p
-        #     lam = new_lam
-
-        #     if burn_in < i:
-        #         num_accepted += 1
-        #         N_samples.append(N.tolist())
-        #         lam_samples.append(lam)
-        #         p_samples.append(p)
 
     if not num_accepted:
         print("No samples accepted.")

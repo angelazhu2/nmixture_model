@@ -2,20 +2,20 @@
 from scipy import stats
 import numpy as np
 import pandas as pd
+from scipy.special import logsumexp
 
 from utils import forward_pass, generate_new_lambda, compute_log_joint, get_log_acceptance
 from io_utils import save_samples, save_summary
 
-def generate_new_N(sites: int, S: int, rng: np.random):
-    return rng.integers(low=1, high=S, size=sites)
+def generate_new_N(sites: int, C_max:np.ndarray, S: int, rng: np.random):
+
+    return rng.integers(low=C_max, high=S, size=sites)
 
 def run_method_one(sites, T, lam, p, S, EPOCHS, random_state=42) -> None:
     """Uniformly sample lambda, p, and N_i."""
     print("\n\nRunning method one")
     rng = np.random.default_rng(random_state)
     N, C = forward_pass(sites=sites, T=T, p=p, lam=lam, rng=rng)
-
-
 
     # Storing true values
     true_N = N
@@ -37,23 +37,22 @@ def run_method_one(sites, T, lam, p, S, EPOCHS, random_state=42) -> None:
     # print("EPOCHS:", EPOCHS)
     num_accepted = 0
     
+    C_max = np.max(C, axis=1)
+    S = np.maximum(N.shape[0]*[S], C_max)
+    lam = rng.uniform(1, S)
+    p = rng.uniform()
+    N = rng.integers(low=C_max, high=S, size=sites)
+
     # TODO: Add a time tracker. Also, it may look good to create some type of visuals for how lambda, p, and N change per iteration. 
+
     for i in range(EPOCHS):
-        if i == 0:
-            lam = generate_new_lambda(S, rng)
-            p = rng.uniform(0, 1)
-            N = generate_new_N(sites, S, rng)
-
         log_old_joint = compute_log_joint(N, C, lam, p, S)
-
-        new_lam = generate_new_lambda(S, rng)
-        new_p = rng.uniform(0, 1)
-        new_N = generate_new_N(sites, S, rng)
+        # print(log_old_joint)
+        new_lam = rng.uniform(1, S)
+        new_p = rng.uniform()
+        new_N = rng.integers(low=C_max, high=S, size=sites) #generate_new_N(sites, S, rng)
 
         log_new_joint = compute_log_joint(new_N, C, new_lam, new_p, S)
-
-        log_trans_new_to_old = np.sum(stats.poisson.logpmf(N, mu=new_lam))
-        log_trans_old_to_new = np.sum(stats.poisson.logpmf(new_N, mu=lam))
 
         acceptance_score = get_log_acceptance(log_old_joint, log_new_joint, 0, 0)
 
@@ -64,10 +63,10 @@ def run_method_one(sites, T, lam, p, S, EPOCHS, random_state=42) -> None:
             p = new_p
             lam = new_lam
 
-            if burn_in < i:
-                N_samples.append(N.tolist())
-                lam_samples.append(lam)
-                p_samples.append(p)
+        if burn_in < i:
+            N_samples.append(N.tolist())
+            lam_samples.append(lam)
+            p_samples.append(p)
 
     if not num_accepted: 
         print("No samples accepted.")
