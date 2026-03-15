@@ -1,11 +1,306 @@
-true_lam,2.0
-est_lam,4.4980151335718865
+,--- NEW RUN ---
+Sites,5.0
+visits,6.0
+bound on lambda,15.0
+Epochs,40000.0
+true_lam,5.0
+est_lam,4.639401327527342
 true_p,0.25
-est_p,0.11205473803100045
+est_p,0.4047781786351517
+true_avg_N,6.0
+est_avg_N,4.623200773359112
+true_total_N,30.0
+est_total_N,23.11600386679556
+N_mae,1.6910230341011367
+num_accepted,384.0
+acceptance_rate,0.0128
+total_time,11.33903
+prop_sparsity,0.13333333333333333
+,--- NEW RUN ---
+Sites,10.0
+visits,6.0
+bound on lambda,15.0
+Epochs,40000.0
+true_lam,5.0
+est_lam,6.087330383394349
+true_p,0.25
+est_p,0.22492403196955768
+true_avg_N,5.9
+est_avg_N,6.051111703723458
+true_total_N,59.0
+est_total_N,60.51111703723458
+N_mae,1.3083036101203376
+num_accepted,52.0
+acceptance_rate,0.0017333333333333333
+total_time,11.72099
+prop_sparsity,0.2833333333333333
+,--- NEW RUN ---
+Sites,20.0
+visits,6.0
+bound on lambda,15.0
+Epochs,40000.0
+true_lam,5.0
+est_lam,10.48434482287486
+true_p,0.25
+est_p,0.13374145069952834
+true_avg_N,5.35
+est_avg_N,10.661698723290776
+true_total_N,107.0
+est_total_N,213.23397446581552
+N_mae,5.311698723290776
+num_accepted,27.0
+acceptance_rate,0.0009
+total_time,11.45405
+prop_sparsity,0.30833333333333335
+,--- NEW RUN ---
+Sites,40.0
+visits,6.0
+bound on lambda,15.0
+Epochs,40000.0
+true_lam,5.0
+est_lam,11.11247370186284
+true_p,0.25
+est_p,0.10822302359222379
+true_avg_N,5.125
+est_avg_N,11.487007066902232
+true_total_N,205.0
+est_total_N,459.48028267608925
+N_mae,6.36200706690223
+num_accepted,17.0
+acceptance_rate,0.0005666666666666667
+total_time,11.87148
+prop_sparsity,0.29583333333333334
+,--- NEW RUN ---
+Sites,100.0
+visits,6.0
+bound on lambda,15.0
+Epochs,40000.0
+true_lam,5.0
+est_lam,14.850873402323279
+true_p,0.25
+est_p,0.0809934851253104
+true_avg_N,5.08
+est_avg_N,14.73264808826961
+true_total_N,508.0
+est_total_N,1473.264808826961
+N_mae,9.673520784026133
+num_accepted,12.0
+acceptance_rate,0.0004
+total_time,13.75121
+prop_sparsity,0.29333333333333333
+,--- NEW RUN ---
+Sites,20.0
+visits,6.0
+bound on lambda,6.0
+Epochs,40000.0
+true_lam,2.0
+est_lam,3.4998584546025038
+true_p,0.25
+est_p,0.12367398427941458
 true_avg_N,2.0
-est_avg_N,4.5732323232323235
+est_avg_N,3.521157371912397
 true_total_N,40.0
-est_total_N,91.46464646464648
-N_mae,2.5732323232323226
-num_accepted,99.0
-acceptance_rate,0.00132
+est_total_N,70.42314743824794
+N_mae,1.7677055901863397
+num_accepted,22.0
+acceptance_rate,0.0007333333333333333
+total_time,11.3798
+prop_sparsity,0.6416666666666667
+,--- NEW RUN ---
+Sites,20.0
+visits,6.0
+bound on lambda,15.0
+Epochs,40000.0
+true_lam,5.0
+est_lam,10.48434482287486
+true_p,0.25
+est_p,0.13374145069952834
+true_avg_N,5.35
+est_avg_N,10.661698723290776
+true_total_N,107.0
+est_total_N,213.23397446581552
+N_mae,5.311698723290776
+num_accepted,27.0
+acceptance_rate,0.0009
+total_time,11.37409
+prop_sparsity,0.30833333333333335
+,--- NEW RUN ---
+Sites,20.0
+visits,6.0
+bound on lambda,45.0
+Epochs,40000.0
+true_lam,15.0
+est_lam,33.228289207579564
+true_p,0.25
+est_p,0.12909905055578158
+true_avg_N,14.9
+est_avg_N,32.41784059468649
+true_total_N,298.0
+est_total_N,648.3568118937297
+N_mae,17.51784059468649
+num_accepted,21.0
+acceptance_rate,0.0007
+total_time,11.24432
+prop_sparsity,0.025
+,--- NEW RUN ---
+Sites,20.0
+visits,6.0
+bound on lambda,90.0
+Epochs,40000.0
+true_lam,30.0
+est_lam,44.67213847644684
+true_p,0.25
+est_p,0.18314072556015076
+true_avg_N,30.0
+est_avg_N,43.311822060735366
+true_total_N,600.0
+est_total_N,866.2364412147073
+N_mae,13.311822060735361
+num_accepted,25.0
+acceptance_rate,0.0008333333333333334
+total_time,11.67583
+prop_sparsity,0.0
+,--- NEW RUN ---
+Sites,20.0
+visits,6.0
+bound on lambda,15.0
+Epochs,40000.0
+true_lam,5.0
+est_lam,9.666551124537397
+true_p,0.1
+est_p,0.06170361968796417
+true_avg_N,5.35
+est_avg_N,9.498959965332178
+true_total_N,107.0
+est_total_N,189.97919930664355
+N_mae,4.148959965332177
+num_accepted,53.0
+acceptance_rate,0.0017666666666666666
+total_time,11.19026
+prop_sparsity,0.5666666666666667
+,--- NEW RUN ---
+Sites,20.0
+visits,6.0
+bound on lambda,15.0
+Epochs,40000.0
+true_lam,5.0
+est_lam,10.48434482287486
+true_p,0.25
+est_p,0.13374145069952834
+true_avg_N,5.35
+est_avg_N,10.661698723290776
+true_total_N,107.0
+est_total_N,213.23397446581552
+N_mae,5.311698723290776
+num_accepted,27.0
+acceptance_rate,0.0009
+total_time,11.76513
+prop_sparsity,0.30833333333333335
+,--- NEW RUN ---
+Sites,20.0
+visits,6.0
+bound on lambda,15.0
+Epochs,40000.0
+true_lam,5.0
+est_lam,11.950083436594289
+true_p,0.5
+est_p,0.2616042379679553
+true_avg_N,5.35
+est_avg_N,11.373960798693291
+true_total_N,107.0
+est_total_N,227.47921597386582
+N_mae,6.02396079869329
+num_accepted,11.0
+acceptance_rate,0.00036666666666666667
+total_time,11.57315
+prop_sparsity,0.05
+,--- NEW RUN ---
+Sites,20.0
+visits,6.0
+bound on lambda,15.0
+Epochs,40000.0
+true_lam,5.0
+est_lam,14.390888009296042
+true_p,0.75
+est_p,0.31192385664649924
+true_avg_N,5.35
+est_avg_N,13.039654655155172
+true_total_N,107.0
+est_total_N,260.79309310310344
+N_mae,7.689654655155172
+num_accepted,11.0
+acceptance_rate,0.00036666666666666667
+total_time,11.6208
+prop_sparsity,0.008333333333333333
+,--- NEW RUN ---
+Sites,20.0
+visits,2.0
+bound on lambda,15.0
+Epochs,40000.0
+true_lam,5.0
+est_lam,9.241487685040397
+true_p,0.25
+est_p,0.1542963400145389
+true_avg_N,5.35
+est_avg_N,9.229919330644357
+true_total_N,107.0
+est_total_N,184.59838661288714
+N_mae,3.8799193306443547
+num_accepted,384.0
+acceptance_rate,0.0128
+total_time,5.54097
+prop_sparsity,0.225
+,--- NEW RUN ---
+Sites,20.0
+visits,6.0
+bound on lambda,15.0
+Epochs,40000.0
+true_lam,5.0
+est_lam,10.48434482287486
+true_p,0.25
+est_p,0.13374145069952834
+true_avg_N,5.35
+est_avg_N,10.661698723290776
+true_total_N,107.0
+est_total_N,213.23397446581552
+N_mae,5.311698723290776
+num_accepted,27.0
+acceptance_rate,0.0009
+total_time,11.49269
+prop_sparsity,0.30833333333333335
+,--- NEW RUN ---
+Sites,20.0
+visits,12.0
+bound on lambda,15.0
+Epochs,40000.0
+true_lam,5.0
+est_lam,7.603682649146008
+true_p,0.25
+est_p,0.1898494772283605
+true_avg_N,5.35
+est_avg_N,7.55
+true_total_N,107.0
+est_total_N,151.0
+N_mae,2.6
+num_accepted,8.0
+acceptance_rate,0.0002666666666666667
+total_time,20.3967
+prop_sparsity,0.3125
+,--- NEW RUN ---
+Sites,20.0
+visits,20.0
+bound on lambda,15.0
+Epochs,40000.0
+true_lam,5.0
+est_lam,11.38609508872988
+true_p,0.25
+est_p,0.11905681370269688
+true_avg_N,5.35
+est_avg_N,10.82656255208507
+true_total_N,107.0
+est_total_N,216.5312510417014
+N_mae,5.4765625520850705
+num_accepted,10.0
+acceptance_rate,0.0003333333333333333
+total_time,32.15011
+prop_sparsity,0.275
