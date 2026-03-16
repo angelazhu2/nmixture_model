@@ -3,7 +3,7 @@ from scipy import stats
 
 from utils import forward_pass
 from io_utils import save_simulated_data
-
+import pandas as pd
 
 #from textbook -- original version, not used.
 # def forward_pass_txt():
@@ -49,7 +49,7 @@ from io_utils import save_simulated_data
 #     return N, C
 
 
-def main():
+def build_simulation_data():
     random_state = 42
     rng = np.random.default_rng(random_state)
     sites_vals = [5, 10, 20, 40, 100]
@@ -67,6 +67,18 @@ def main():
 
     # N, C = forward_pass(sites=sites, T=T, p=p, lam=lam, rng=rng)
     # save_simulated_data("../data", N, C)
+
+def clean_real_data(path="../data/mallard_y.csv"):
+    df = pd.read_csv(path)
+    org_rows = len(df)
+    df = df.dropna()
+    print(f"mallard data {len(df)} rows from {org_rows}.")
+    df.to_csv("../data/mallard_clean.csv", index=False)
+    return df
+
+def main():
+    #build_simulation_data()
+    clean_real_data()
 
 if __name__ == "__main__":
     main()
