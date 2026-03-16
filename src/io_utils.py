@@ -2,12 +2,13 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-def save_simulated_data(root: str, N: np.ndarray, C: np.ndarray) -> None:
-    path = f"{root}/simulated_data_N_{len(N)}_C_{C.shape[1]}.csv"
+
+def save_simulated_data(root: str, N: np.ndarray, C: np.ndarray, p: float, lam: float) -> None:
+    path = f"{root}/simulated_data_site{len(N)}_visit{C.shape[1]}_p{p}_l{lam}.csv"
     df = pd.DataFrame(C, columns=[f"C_{t+1}" for t in range(C.shape[1])])
     df.insert(0, "N", N)
     df.to_csv(path, index=False)
-    print(f"Simulated data saved to {path}")
+    #print(f"Simulated data saved to {path}")
 
 
 def save_samples(root, method, sites, T, S, EPOCHS, true_lam, true_p, N_samples, lam_samples, p_samples, total_time, prop_sparsity):
