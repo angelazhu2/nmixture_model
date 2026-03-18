@@ -7,7 +7,7 @@ def main() -> None:
     lam = 5
     p = 0.25
     S = lam * 3
-    EPOCHS = 10
+    EPOCHS = 40000
 
     from method_one import run_method_one
     from method_two import run_method_two
@@ -17,7 +17,11 @@ def main() -> None:
 
     RANDOM_STATE = 42
 
+    run_method_one(sites, T, lam, p, S, EPOCHS, random_state=RANDOM_STATE)
+    run_method_two(sites, T, lam, p, S, EPOCHS, random_state=RANDOM_STATE)
     run_method_three(sites, T, lam, p, S, EPOCHS, random_state=RANDOM_STATE)
+    run_method_four(sites, T, lam, p, S, EPOCHS, random_state=RANDOM_STATE)
+    run_method_five(sites, T, lam, p, S, EPOCHS, random_state=RANDOM_STATE)
 
     # t_vals = [2, 6, 12, 20]
     # p_vals = [0.1, 0.25, 0.5, 0.75]

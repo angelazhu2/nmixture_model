@@ -70,16 +70,6 @@ def run_method_three(sites, T, lam, p, S, EPOCHS, random_state=42) -> None:
 
         acceptance_score = get_log_acceptance(log_old_joint, log_new_joint, log_trans_new_to_old, log_trans_old_to_new)
 
-        # Testing
-        print(N)
-        print(new_N)
-        print(stats.poisson.logpmf(N, mu=new_N))
-        print("new_joint:", log_new_joint)
-        print("old joint", log_old_joint)
-        # print(acceptance_score)
-        print("trans new to old", log_trans_new_to_old)
-        print("trans old to new", log_trans_old_to_new)
-
         U = np.log(rng.uniform())
         if acceptance_score >= U: 
             num_accepted += 1
