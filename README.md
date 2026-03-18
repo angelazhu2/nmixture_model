@@ -1,4 +1,4 @@
-# N-Mixture Model: MCMC Inference Comparison
+# Building MCMC samplers for N-Mixture Models
 By Angela Zhu and Brayden Edwards 
 
 This project implements and compares five MCMC methods for fitting an N-mixture model — a hierarchical model used in ecology to estimate wildlife abundance when animals are imperfectly detected.
