@@ -22,6 +22,8 @@ Results are saved automatically to `data/results/`. This folder contains our res
 
 Method code is all stored within files names `method_x.py` while the helper functions like calcuating joint probabilities and acceptance probabiltiies are within `utils.py`.
 
+For baseline models, these are defined in `baseline_nimble.R` and `baseline_unmarked.R`. These run better in RStudio. We did not end up using the unmarked version in the report, but left it here in the code. 
+
 #### Simulation Data
 The code for this can be found in `utils.py` within the helper function `forward_pass()`. For the code to build simulation data that is within `build_dataset.py`
 
