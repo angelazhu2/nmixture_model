@@ -17,7 +17,7 @@ The goal is to recover $\lambda$ (expected abundance), $p$ (detection probabilit
 The `data\` folder contains both our real world data and our results. 
 
 #### Run Methods
-run `python src/main.py' this is where we set up parameters and run methods. 
+Navigate to the `src` folder and run `python main.py` this is where we set up parameters and run methods. 
 Results are saved automatically to `data/results/`. This folder contains our results from multiple runs. 
 
 Method code is all stored within files names `method_x.py` while the helper functions like calcuating joint probabilities and acceptance probabiltiies are within `utils.py`.
